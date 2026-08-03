@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #0b1520;
+  color: #e3d9be;
+}
+
+/* Borde de "tira dentada" arriba y abajo del ticket, como si estuviera arrancado de la máquina */
+.ticket-edge-top {
+  mask-image: radial-gradient(circle at 8px 0px, transparent 8px, black 8.5px);
+  -webkit-mask-image: radial-gradient(
+    circle at 8px 0px,
+    transparent 8px,
+    black 8.5px
+  );
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-size: 16px 16px;
+  -webkit-mask-size: 16px 16px;
+}
+
+.ticket-edge-bottom {
+  mask-image: radial-gradient(circle at 8px 16px, transparent 8px, black 8.5px);
+  -webkit-mask-image: radial-gradient(
+    circle at 8px 16px,
+    transparent 8px,
+    black 8.5px
+  );
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-size: 16px 16px;
+  -webkit-mask-size: 16px 16px;
+}
+
+@keyframes print-line {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.print-line {
+  animation: print-line 220ms ease-out;
+}
+
+:focus-visible {
+  outline: 2px solid #f2b705;
+  outline-offset: 2px;
+}
