@@ -18,3 +18,21 @@ create index if not exists gastos_fecha_idx on gastos (fecha desc);
 -- así que RLS queda deshabilitado: es más simple para un proyecto de un solo usuario
 -- y no hay riesgo porque la key nunca se expone al cliente.
 alter table gastos disable row level security;
+
+-- Gastos fijos: lista aparte de gastos recurrentes mensuales (alquiler, streaming,
+-- etc.). No genera filas en "gastos" ni afecta el total del mes.
+create table if not exists gastos_fijos (
+  id uuid primary key default gen_random_uuid(),
+  monto numeric(12, 2) not null check (monto > 0),
+  descripcion text not null default '',
+  categoria text not null default 'Otros',
+  cuotas_totales integer check (cuotas_totales > 0),
+  cuotas_pagadas integer not null default 0 check (cuotas_pagadas >= 0),
+  created_at timestamptz not null default now()
+);
+
+alter table gastos_fijos disable row level security;
+
+-- Migración para bases que ya tenían gastos_fijos sin columnas de cuotas:
+alter table gastos_fijos add column if not exists cuotas_totales integer check (cuotas_totales > 0);
+alter table gastos_fijos add column if not exists cuotas_pagadas integer not null default 0 check (cuotas_pagadas >= 0);

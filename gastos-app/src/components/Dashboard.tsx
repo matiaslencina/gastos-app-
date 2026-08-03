@@ -6,6 +6,7 @@ import TicketForm from "./TicketForm";
 import GastoForm from "./GastoForm";
 import GastoList from "./GastoList";
 import InsightsPanel from "./InsightsPanel";
+import GastosFijosPanel from "./GastosFijosPanel";
 
 export default function Dashboard() {
   const [gastos, setGastos] = useState<Gasto[]>([]);
@@ -68,7 +69,12 @@ export default function Dashboard() {
         </span>
       </div>
 
-      <TicketForm onGastoAgregado={agregarGastoLocal} />
+      <div className="w-full max-w-md flex flex-col gap-3">
+        <h2 className="font-display font-semibold text-sm text-paper-100 tracking-tight">
+          Gastos
+        </h2>
+        <TicketForm onGastoAgregado={agregarGastoLocal} />
+      </div>
 
       <div className="w-full max-w-md">
         <button
@@ -85,6 +91,8 @@ export default function Dashboard() {
       </div>
 
       <InsightsPanel />
+
+      <GastosFijosPanel />
 
       <GastoList
         gastos={gastos}

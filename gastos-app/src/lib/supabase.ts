@@ -18,3 +18,13 @@ export type Gasto = {
   origen: "manual" | "ia";
   created_at: string;
 };
+
+export type GastoFijo = {
+  id: string;
+  monto: number;
+  descripcion: string;
+  categoria: string;
+  cuotas_totales: number | null;
+  cuotas_pagadas: number;
+  created_at: string;
+};
