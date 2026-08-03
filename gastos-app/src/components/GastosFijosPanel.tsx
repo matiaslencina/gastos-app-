@@ -229,24 +229,28 @@ export default function GastosFijosPanel() {
         </label>
 
         {esCuotas && (
-          <div className="flex gap-2">
-            <input
-              type="number"
-              min="1"
-              placeholder="Cantidad de cuotas"
-              value={cuotasTotales}
-              onChange={(e) => setCuotasTotales(e.target.value)}
-              required
-              className="flex-1 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
-            />
-            <input
-              type="number"
-              min="0"
-              placeholder="Cuotas ya pagadas"
-              value={cuotasPagadas}
-              onChange={(e) => setCuotasPagadas(e.target.value)}
-              className="flex-1 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
-            />
+          <div className="flex flex-col gap-2">
+            <label className="flex flex-col gap-1 text-xs text-paper-300/50">
+              Cantidad de cuotas
+              <input
+                type="number"
+                min="1"
+                value={cuotasTotales}
+                onChange={(e) => setCuotasTotales(e.target.value)}
+                required
+                className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+              />
+            </label>
+            <label className="flex flex-col gap-1 text-xs text-paper-300/50">
+              Cuotas ya pagadas
+              <input
+                type="number"
+                min="0"
+                value={cuotasPagadas}
+                onChange={(e) => setCuotasPagadas(e.target.value)}
+                className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+              />
+            </label>
           </div>
         )}
 
