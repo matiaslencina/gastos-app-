@@ -4,6 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { CATEGORIAS } from "@/lib/categorias";
 import type { GastoFijo } from "@/lib/supabase";
 
+// Para una compra en cuotas, "monto" guarda el total de la compra:
+// lo que impacta cada mes es ese total dividido por la cantidad de cuotas.
+function montoMensual(g: GastoFijo) {
+  return g.cuotas_totales ? Number(g.monto) / g.cuotas_totales : Number(g.monto);
+}
+
 export default function GastosFijosPanel() {
   const [gastosFijos, setGastosFijos] = useState<GastoFijo[]>([]);
   const [cargando, setCargando] = useState(true);
@@ -26,7 +32,7 @@ export default function GastosFijosPanel() {
   }, []);
 
   const totalFijo = useMemo(
-    () => gastosFijos.reduce((acc, g) => acc + Number(g.monto), 0),
+    () => gastosFijos.reduce((acc, g) => acc + montoMensual(g), 0),
     [gastosFijos]
   );
 
@@ -149,11 +155,18 @@ export default function GastosFijosPanel() {
                     : g.categoria}
                 </span>
               </span>
-              <span className="font-medium tabular-nums shrink-0 text-paper-100">
-                $
-                {Number(g.monto).toLocaleString("es-AR", {
-                  minimumFractionDigits: 2,
-                })}
+              <span className="font-medium tabular-nums shrink-0 text-paper-100 text-right">
+                <span className="block">
+                  $
+                  {montoMensual(g).toLocaleString("es-AR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+                {g.cuotas_totales != null && (
+                  <span className="block text-[10px] text-paper-300/40 font-normal">
+                    de ${Number(g.monto).toLocaleString("es-AR")} total
+                  </span>
+                )}
               </span>
               {g.cuotas_totales != null && (
                 <button
@@ -192,7 +205,7 @@ export default function GastosFijosPanel() {
             type="number"
             step="0.01"
             min="0"
-            placeholder="Monto"
+            placeholder={esCuotas ? "Monto total de la compra" : "Monto"}
             value={monto}
             onChange={(e) => setMonto(e.target.value)}
             required
@@ -283,6 +296,11 @@ function FilaEdicion({
 
   return (
     <li className="flex flex-col gap-2 py-2">
+      {gastoFijo.cuotas_totales != null && (
+        <p className="text-[10px] text-paper-300/40">
+          El monto es el total de la compra (se divide por las {gastoFijo.cuotas_totales} cuotas)
+        </p>
+      )}
       <div className="flex gap-2">
         <input
           type="number"
