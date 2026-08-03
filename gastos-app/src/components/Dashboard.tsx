@@ -45,6 +45,18 @@ export default function Dashboard() {
     await fetch(`/api/gastos/${id}`, { method: "DELETE" });
   }
 
+  async function editarGasto(id: string, cambios: Partial<Gasto>) {
+    const res = await fetch(`/api/gastos/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(cambios),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setGastos((prev) => prev.map((g) => (g.id === id ? data.gasto : g)));
+    }
+  }
+
   return (
     <main className="min-h-screen py-8 px-4 flex flex-col items-center gap-6">
       <header className="w-full max-w-md">
@@ -98,6 +110,7 @@ export default function Dashboard() {
         gastos={gastos}
         cargando={cargando}
         onBorrar={borrarGasto}
+        onEditar={editarGasto}
       />
     </main>
   );

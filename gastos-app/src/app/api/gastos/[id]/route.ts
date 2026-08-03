@@ -1,5 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { CATEGORIAS } from "@/lib/categorias";
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const body = await req.json();
+  const categoriasValidas: readonly string[] = CATEGORIAS;
+  const cambios: Record<string, unknown> = {};
+
+  if (body.monto !== undefined) {
+    const monto = Number(body.monto);
+    if (!monto || monto <= 0) {
+      return NextResponse.json(
+        { error: "El monto tiene que ser mayor a 0" },
+        { status: 400 }
+      );
+    }
+    cambios.monto = monto;
+  }
+
+  if (body.descripcion !== undefined) {
+    cambios.descripcion = String(body.descripcion).slice(0, 200);
+  }
+
+  if (body.categoria !== undefined) {
+    cambios.categoria = categoriasValidas.includes(body.categoria)
+      ? body.categoria
+      : "Otros";
+  }
+
+  if (body.fecha !== undefined) {
+    cambios.fecha = String(body.fecha);
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("gastos")
+    .update(cambios)
+    .eq("id", params.id)
+    .select()
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+  return NextResponse.json({ gasto: data });
+}
 
 export async function DELETE(
   _req: NextRequest,

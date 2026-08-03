@@ -144,53 +144,59 @@ export default function GastosFijosPanel() {
           ) : (
             <li
               key={g.id}
-              className="print-line group flex items-center justify-between gap-2 py-2 text-sm"
+              className="print-line flex flex-col gap-1.5 py-2.5 text-sm"
             >
-              <span className="flex-1 truncate text-paper-100">
-                {g.descripcion || g.categoria}
-                <span className="text-paper-300/40 text-xs ml-1.5">
-                  ·{" "}
+              <div className="flex items-center justify-between gap-2">
+                <span className="flex-1 truncate text-paper-100">
+                  {g.descripcion || g.categoria}
+                </span>
+                <span className="font-medium tabular-nums shrink-0 text-paper-100 text-right">
+                  <span className="block">
+                    $
+                    {montoMensual(g).toLocaleString("es-AR", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                  {g.cuotas_totales != null && (
+                    <span className="block text-[10px] text-paper-300/40 font-normal">
+                      de ${Number(g.monto).toLocaleString("es-AR")} total
+                    </span>
+                  )}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-paper-300/50 text-xs">
                   {g.cuotas_totales != null
-                    ? `${g.cuotas_pagadas}/${g.cuotas_totales} cuotas`
+                    ? `${g.cuotas_pagadas}/${g.cuotas_totales} cuotas · ${g.categoria}`
                     : g.categoria}
                 </span>
-              </span>
-              <span className="font-medium tabular-nums shrink-0 text-paper-100 text-right">
-                <span className="block">
-                  $
-                  {montoMensual(g).toLocaleString("es-AR", {
-                    minimumFractionDigits: 2,
-                  })}
-                </span>
-                {g.cuotas_totales != null && (
-                  <span className="block text-[10px] text-paper-300/40 font-normal">
-                    de ${Number(g.monto).toLocaleString("es-AR")} total
-                  </span>
-                )}
-              </span>
-              {g.cuotas_totales != null && (
-                <button
-                  onClick={() => marcarCuotaPagada(g)}
-                  aria-label="Marcar cuota pagada"
-                  className="opacity-0 group-hover:opacity-100 text-paper-300/40 hover:text-led-green text-xs shrink-0 transition-opacity"
-                >
-                  +1
-                </button>
-              )}
-              <button
-                onClick={() => setEditandoId(g.id)}
-                aria-label="Editar gasto fijo"
-                className="opacity-0 group-hover:opacity-100 text-paper-300/40 hover:text-led-amber text-xs shrink-0 transition-opacity"
-              >
-                ✎
-              </button>
-              <button
-                onClick={() => borrar(g.id)}
-                aria-label="Borrar gasto fijo"
-                className="opacity-0 group-hover:opacity-100 text-paper-300/40 hover:text-led-red text-xs shrink-0 transition-opacity"
-              >
-                ✕
-              </button>
+                <div className="flex items-center gap-1 shrink-0">
+                  {g.cuotas_totales != null && (
+                    <button
+                      onClick={() => marcarCuotaPagada(g)}
+                      aria-label="Marcar cuota pagada"
+                      className="text-paper-300/60 hover:text-led-green text-xs px-2 py-1.5 -my-1.5"
+                    >
+                      +1 cuota
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setEditandoId(g.id)}
+                    aria-label="Editar gasto fijo"
+                    className="text-paper-300/60 hover:text-led-amber text-sm px-2 py-1.5 -my-1.5"
+                  >
+                    ✎
+                  </button>
+                  <button
+                    onClick={() => borrar(g.id)}
+                    aria-label="Borrar gasto fijo"
+                    className="text-paper-300/60 hover:text-led-red text-sm px-2 py-1.5 -my-1.5"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
             </li>
           )
         )}
