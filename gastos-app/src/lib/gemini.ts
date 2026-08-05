@@ -17,6 +17,29 @@ function hoyISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
+// BYMA opera de lunes a viernes de 11:00 a 17:00, hora Argentina (UTC-3 fijo,
+// no tiene horario de verano). Esto le permite a la IA saber si tiene que
+// hablar de "cómo viene" el día o de "cómo cerró".
+function estadoMercadoArgentino(): string {
+  const horaAR = new Date(Date.now() - 3 * 60 * 60 * 1000);
+  const dia = horaAR.getUTCDay();
+  const horas = horaAR.getUTCHours();
+  const minutos = horaAR.getUTCMinutes();
+  const horaDecimal = horas + minutos / 60;
+  const horaTexto = `${String(horas).padStart(2, "0")}:${String(minutos).padStart(2, "0")}`;
+
+  if (dia === 0 || dia === 6) {
+    return `Son las ${horaTexto} (hora Argentina) de un día de fin de semana: el mercado está cerrado. Las variaciones que te paso son las del último cierre (viernes), no de "hoy".`;
+  }
+  if (horaDecimal < 11) {
+    return `Son las ${horaTexto} (hora Argentina) y el mercado TODAVÍA NO ABRIÓ hoy (abre 11:00). Las variaciones que te paso son las del cierre de la rueda anterior, no de la sesión de hoy.`;
+  }
+  if (horaDecimal < 17) {
+    return `Son las ${horaTexto} (hora Argentina): el mercado está ABIERTO ahora mismo (cierra 17:00). Las variaciones que te paso son en vivo, de lo que va de la rueda de hoy hasta este momento, no un cierre.`;
+  }
+  return `Son las ${horaTexto} (hora Argentina): el mercado YA CERRÓ por hoy (cerró 17:00). Las variaciones que te paso son las del cierre de la rueda de hoy.`;
+}
+
 export type GastoParseado = {
   monto: number;
   descripcion: string;
@@ -172,6 +195,8 @@ export async function generarResumenMercado(
     valorActual: p.valorActual,
   }));
 
+  const estadoMercado = estadoMercadoArgentino();
+
   const response = await ai.models.generateContent({
     model: MODEL_PRO,
     contents: [
@@ -179,11 +204,15 @@ export async function generarResumenMercado(
         role: "user",
         parts: [
           {
-            text: `Sos un asistente financiero personal para alguien que invierte en la bolsa argentina (CEDEARs y bonos). Te paso sus posiciones actuales y el contexto general del mercado de hoy, todo en JSON.
+            text: `Sos un asistente financiero personal para alguien que invierte en la bolsa argentina (CEDEARs y bonos). Te paso sus posiciones actuales y el contexto general del mercado, todo en JSON.
+
+Estado del mercado en este momento: ${estadoMercado}
+
 Escribí un resumen breve (máximo 10 líneas, en español rioplatense, tono directo y cercano, sin emojis de más) que incluya:
-1. Cómo les fue hoy a sus posiciones (cuáles subieron/bajaron más).
-2. Contexto general: qué se destacó en el mercado hoy (mayores subas/bajas del panel).
-3. Una recomendación concreta y práctica (aclarando que es una opinión, no un consejo financiero formal).
+1. Según el estado del mercado de arriba, dejá claro si esto es "cómo va hasta ahora" (mercado abierto o recién abierto), "cómo cerró" (mercado ya cerrado), o que todavía no hay novedades de hoy (no abrió o es fin de semana, y las variaciones son del cierre anterior).
+2. Cómo les fue a sus posiciones (cuáles subieron/bajaron más).
+3. Contexto general: qué se destacó en el mercado (mayores subas/bajas del panel).
+4. Una recomendación concreta y práctica (aclarando que es una opinión, no un consejo financiero formal).
 
 Sus posiciones:
 ${JSON.stringify(resumenPosiciones)}
