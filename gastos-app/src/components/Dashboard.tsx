@@ -7,6 +7,7 @@ import GastoForm from "./GastoForm";
 import GastoList from "./GastoList";
 import InsightsPanel from "./InsightsPanel";
 import GastosFijosPanel from "./GastosFijosPanel";
+import Nav from "./Nav";
 
 export default function Dashboard() {
   const [gastos, setGastos] = useState<Gasto[]>([]);
@@ -59,6 +60,8 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen py-8 px-4 flex flex-col items-center gap-6">
+      <Nav />
+
       <header className="w-full max-w-md">
         <h1 className="font-display font-bold text-2xl text-paper-100 tracking-tight">
           Mis Gastos

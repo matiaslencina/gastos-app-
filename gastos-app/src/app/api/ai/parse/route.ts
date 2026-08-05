@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { parseGastoDesdeTexto } from "@/lib/gemini";
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   const { texto } = await req.json();
 

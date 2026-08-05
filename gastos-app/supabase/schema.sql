@@ -36,3 +36,20 @@ alter table gastos_fijos disable row level security;
 -- Migración para bases que ya tenían gastos_fijos sin columnas de cuotas:
 alter table gastos_fijos add column if not exists cuotas_totales integer check (cuotas_totales > 0);
 alter table gastos_fijos add column if not exists cuotas_pagadas integer not null default 0 check (cuotas_pagadas >= 0);
+
+-- Cartera de acciones/CEDEARs/bonos. El precio y la variación del día se
+-- consultan en vivo (data912.com), aquí solo se guarda lo que el usuario tiene.
+create table if not exists posiciones (
+  id uuid primary key default gen_random_uuid(),
+  ticker text not null,
+  nombre text not null,
+  mercado text not null default 'cedear', -- 'cedear' | 'bono' | 'lecap' | 'accion'
+  cantidad numeric(14, 4) not null check (cantidad > 0),
+  ppc numeric(14, 4) check (ppc > 0), -- precio promedio de compra, misma convención que el precio de mercado (bonos/LECAPs por cada 100 nominal)
+  created_at timestamptz not null default now()
+);
+
+alter table posiciones disable row level security;
+
+-- Migración para bases que ya tenían posiciones sin ppc:
+alter table posiciones add column if not exists ppc numeric(14, 4) check (ppc > 0);

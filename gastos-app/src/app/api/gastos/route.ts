@@ -3,6 +3,8 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { categorizarGasto } from "@/lib/gemini";
 import { CATEGORIAS } from "@/lib/categorias";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const { data, error } = await supabaseAdmin
     .from("gastos")

@@ -1,6 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 import { CATEGORIAS } from "./categorias";
 import type { Gasto } from "./supabase";
+import type { PosicionConPrecio } from "./posiciones";
+import type { CotizacionData912 } from "./data912";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
 
@@ -147,4 +149,56 @@ ${JSON.stringify(resumen)}`,
   });
 
   return response.text ?? "No pude generar el resumen, probá de nuevo.";
+}
+
+/**
+ * Genera un resumen del mercado del día combinando las posiciones del
+ * usuario con el contexto general del panel de CEDEARs (mayores subas/bajas).
+ */
+export async function generarResumenMercado(
+  posiciones: PosicionConPrecio[],
+  topSubas: CotizacionData912[],
+  topBajas: CotizacionData912[]
+): Promise<string> {
+  if (posiciones.length === 0) {
+    return "Todavía no cargaste ninguna posición. Agregá alguna y volvé a pedir el resumen.";
+  }
+
+  const resumenPosiciones = posiciones.map((p) => ({
+    ticker: p.ticker,
+    nombre: p.nombre,
+    mercado: p.mercado,
+    variacionHoyPorc: p.pctChange,
+    valorActual: p.valorActual,
+  }));
+
+  const response = await ai.models.generateContent({
+    model: MODEL_PRO,
+    contents: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `Sos un asistente financiero personal para alguien que invierte en la bolsa argentina (CEDEARs y bonos). Te paso sus posiciones actuales y el contexto general del mercado de hoy, todo en JSON.
+Escribí un resumen breve (máximo 10 líneas, en español rioplatense, tono directo y cercano, sin emojis de más) que incluya:
+1. Cómo les fue hoy a sus posiciones (cuáles subieron/bajaron más).
+2. Contexto general: qué se destacó en el mercado hoy (mayores subas/bajas del panel).
+3. Una recomendación concreta y práctica (aclarando que es una opinión, no un consejo financiero formal).
+
+Sus posiciones:
+${JSON.stringify(resumenPosiciones)}
+
+Mayores subas del panel de CEDEARs hoy:
+${JSON.stringify(topSubas)}
+
+Mayores bajas del panel de CEDEARs hoy:
+${JSON.stringify(topBajas)}`,
+          },
+        ],
+      },
+    ],
+    config: { temperature: 0.4 },
+  });
+
+  return response.text ?? "No pude generar el resumen del mercado, probá de nuevo.";
 }

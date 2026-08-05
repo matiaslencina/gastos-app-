@@ -28,3 +28,13 @@ export type GastoFijo = {
   cuotas_pagadas: number;
   created_at: string;
 };
+
+export type Posicion = {
+  id: string;
+  ticker: string;
+  nombre: string;
+  mercado: "cedear" | "bono" | "lecap" | "accion";
+  cantidad: number;
+  ppc: number | null;
+  created_at: string;
+};
