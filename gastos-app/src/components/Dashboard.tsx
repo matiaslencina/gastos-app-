@@ -9,10 +9,22 @@ import InsightsPanel from "./InsightsPanel";
 import GastosFijosPanel from "./GastosFijosPanel";
 import Nav from "./Nav";
 
+const MESES = [
+  "enero", "febrero", "marzo", "abril", "mayo", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+];
+
 export default function Dashboard() {
+  const hoy = new Date();
   const [gastos, setGastos] = useState<Gasto[]>([]);
   const [cargando, setCargando] = useState(true);
   const [mostrarFormManual, setMostrarFormManual] = useState(false);
+  const [mes, setMes] = useState(hoy.getMonth());
+  const [anio, setAnio] = useState(hoy.getFullYear());
+  const [mostrarSelectorFecha, setMostrarSelectorFecha] = useState(false);
+
+  const anioActual = hoy.getFullYear();
+  const anios = [anioActual - 2, anioActual - 1, anioActual, anioActual + 1];
 
   async function cargarGastos() {
     const res = await fetch("/api/gastos");
@@ -25,17 +37,17 @@ export default function Dashboard() {
     cargarGastos();
   }, []);
 
-  const totalDelMes = useMemo(() => {
-    const hoy = new Date();
-    return gastos
-      .filter((g) => {
-        const f = new Date(g.fecha + "T00:00:00");
-        return (
-          f.getMonth() === hoy.getMonth() && f.getFullYear() === hoy.getFullYear()
-        );
-      })
-      .reduce((acc, g) => acc + Number(g.monto), 0);
-  }, [gastos]);
+  const gastosDelMes = useMemo(() => {
+    return gastos.filter((g) => {
+      const f = new Date(g.fecha + "T00:00:00");
+      return f.getMonth() === mes && f.getFullYear() === anio;
+    });
+  }, [gastos, mes, anio]);
+
+  const totalDelMes = useMemo(
+    () => gastosDelMes.reduce((acc, g) => acc + Number(g.monto), 0),
+    [gastosDelMes]
+  );
 
   function agregarGastoLocal(gasto: Gasto) {
     setGastos((prev) => [gasto, ...prev]);
@@ -66,12 +78,40 @@ export default function Dashboard() {
         <h1 className="font-display font-bold text-2xl text-paper-100 tracking-tight">
           Mis Gastos
         </h1>
-        <p className="text-xs text-paper-300/50 mt-0.5">
-          {new Date().toLocaleDateString("es-AR", {
-            month: "long",
-            year: "numeric",
-          })}
-        </p>
+        <button
+          type="button"
+          onClick={() => setMostrarSelectorFecha((v) => !v)}
+          className="text-xs text-paper-300/50 mt-0.5 bg-transparent p-0"
+        >
+          {MESES[mes]} de {anio}
+        </button>
+
+        {mostrarSelectorFecha && (
+          <div className="flex gap-2 mt-1">
+            <select
+              value={mes}
+              onChange={(e) => setMes(Number(e.target.value))}
+              className="bg-transparent text-xs text-paper-300/70 border-none appearance-none focus:outline-none"
+            >
+              {MESES.map((m, i) => (
+                <option key={m} value={i} className="bg-ink-900 text-paper-100">
+                  {m}
+                </option>
+              ))}
+            </select>
+            <select
+              value={anio}
+              onChange={(e) => setAnio(Number(e.target.value))}
+              className="bg-transparent text-xs text-paper-300/70 border-none appearance-none focus:outline-none"
+            >
+              {anios.map((a) => (
+                <option key={a} value={a} className="bg-ink-900 text-paper-100">
+                  {a}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </header>
 
       {/* Display tipo caja registradora con el total del mes */}
@@ -110,7 +150,7 @@ export default function Dashboard() {
       <GastosFijosPanel />
 
       <GastoList
-        gastos={gastos}
+        gastos={gastosDelMes}
         cargando={cargando}
         onBorrar={borrarGasto}
         onEditar={editarGasto}

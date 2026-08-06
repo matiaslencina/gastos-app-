@@ -7,7 +7,6 @@ import type { Posicion } from "@/lib/supabase";
 import type { PosicionConPrecio } from "@/lib/posiciones";
 import Nav from "./Nav";
 import InsightsMercado from "./InsightsMercado";
-import ChatMercado from "./ChatMercado";
 
 type ResultadoBusqueda = {
   symbol: string;
@@ -247,8 +246,6 @@ export default function AccionesDashboard() {
       </div>
 
       <InsightsMercado />
-
-      <ChatMercado />
     </main>
   );
 }
