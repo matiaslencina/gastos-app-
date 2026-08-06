@@ -44,7 +44,7 @@ export default function GastoForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-ink-900 border border-paper-300/20 rounded-sm p-4 flex flex-col gap-3"
+      className="bg-ink-900 border border-paper-300/20 rounded-2xl p-4 flex flex-col gap-3"
     >
       <div className="flex gap-2">
         <input
@@ -55,25 +55,25 @@ export default function GastoForm({
           value={monto}
           onChange={(e) => setMonto(e.target.value)}
           required
-          className="w-28 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+          className="w-28 bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
         />
         <input
           type="date"
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
-          className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+          className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
         />
       </div>
       <input
         placeholder="Descripción (opcional)"
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
-        className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+        className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
       />
       <select
         value={categoria}
         onChange={(e) => setCategoria(e.target.value)}
-        className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+        className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
       >
         <option value="">Categoría (la IA la sugiere si la dejás vacía)</option>
         {CATEGORIAS.map((c) => (
@@ -88,7 +88,7 @@ export default function GastoForm({
       <button
         type="submit"
         disabled={cargando}
-        className="bg-paper-100 text-ink-950 rounded-sm py-2 text-sm font-medium disabled:opacity-50"
+        className="bg-paper-100 text-ink-950 rounded-full py-2 text-sm font-medium disabled:opacity-50"
       >
         {cargando ? "Guardando..." : "Guardar gasto"}
       </button>

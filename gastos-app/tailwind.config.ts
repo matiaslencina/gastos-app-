@@ -6,19 +6,19 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          950: "#0B1520",
-          900: "#101F30",
-          800: "#182B40",
+          950: "#07090A",
+          900: "#0F1411",
+          800: "#1A211C",
         },
         paper: {
-          100: "#F7F3E9",
-          200: "#EFE8D6",
-          300: "#E3D9BE",
+          100: "#F5F6F4",
+          200: "#E4E7E3",
+          300: "#C7CDC8",
         },
         led: {
-          amber: "#F2B705",
-          green: "#3FBF7F",
-          red: "#E2543C",
+          amber: "#16A34A",
+          green: "#22C55E",
+          red: "#E5484D",
         },
       },
       fontFamily: {
@@ -27,7 +27,7 @@ const config: Config = {
       },
       backgroundImage: {
         perforate:
-          "radial-gradient(circle, #0B1520 2.5px, transparent 2.5px)",
+          "radial-gradient(circle, #07090A 2.5px, transparent 2.5px)",
       },
       backgroundSize: {
         perforate: "16px 16px",

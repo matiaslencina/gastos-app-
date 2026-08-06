@@ -24,7 +24,7 @@ export default function GastoList({
   const [editandoId, setEditandoId] = useState<string | null>(null);
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md rounded-3xl overflow-hidden">
       <div className="h-3 bg-paper-100 ticket-edge-top" />
       <div className="bg-paper-100 text-ink-950 px-5 py-4">
         <p className="text-center text-[10px] uppercase tracking-[0.2em] text-ink-950/50 mb-3">
@@ -112,14 +112,14 @@ function FilaGasto({
         <button
           onClick={onEditar}
           aria-label="Editar gasto"
-          className="text-ink-950/40 hover:text-led-amber text-sm px-2 py-1.5 -my-1.5 shrink-0"
+          className="rounded-full text-ink-950/40 hover:text-led-amber hover:bg-ink-950/5 text-sm px-2 py-1.5 -my-1.5 shrink-0"
         >
           ✎
         </button>
         <button
           onClick={onBorrar}
           aria-label="Borrar gasto"
-          className="text-ink-950/40 hover:text-led-red text-sm px-2 py-1.5 -my-1.5 shrink-0"
+          className="rounded-full text-ink-950/40 hover:text-led-red hover:bg-ink-950/5 text-sm px-2 py-1.5 -my-1.5 shrink-0"
         >
           ✕
         </button>
@@ -156,25 +156,25 @@ function FilaEdicion({
           min="0"
           value={monto}
           onChange={(e) => setMonto(e.target.value)}
-          className="w-24 bg-paper-200 border border-ink-950/20 rounded-sm px-2 py-1 text-sm text-ink-950"
+          className="w-24 bg-paper-200 border border-ink-950/20 rounded-2xl px-2 py-1 text-sm text-ink-950"
         />
         <input
           type="date"
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
-          className="bg-paper-200 border border-ink-950/20 rounded-sm px-2 py-1 text-sm text-ink-950"
+          className="bg-paper-200 border border-ink-950/20 rounded-2xl px-2 py-1 text-sm text-ink-950"
         />
       </div>
       <input
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
-        className="bg-paper-200 border border-ink-950/20 rounded-sm px-2 py-1 text-sm text-ink-950"
+        className="bg-paper-200 border border-ink-950/20 rounded-2xl px-2 py-1 text-sm text-ink-950"
       />
       <div className="flex gap-2 items-center">
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
-          className="flex-1 bg-paper-200 border border-ink-950/20 rounded-sm px-2 py-1 text-sm text-ink-950"
+          className="flex-1 bg-paper-200 border border-ink-950/20 rounded-2xl px-2 py-1 text-sm text-ink-950"
         >
           {CATEGORIAS.map((c) => (
             <option key={c} value={c}>

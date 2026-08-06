@@ -231,3 +231,55 @@ ${JSON.stringify(topBajas)}`,
 
   return response.text ?? "No pude generar el resumen del mercado, probá de nuevo.";
 }
+
+export type MensajeChat = {
+  role: "user" | "model";
+  texto: string;
+};
+
+/**
+ * Chat libre sobre finanzas/mercado, con memoria de la conversación y
+ * búsqueda en Google habilitada para que pueda traer información actualizada
+ * más allá de la cartera del usuario.
+ */
+export async function consultarAsistenteMercado(
+  pregunta: string,
+  historial: MensajeChat[],
+  posiciones: PosicionConPrecio[]
+): Promise<string> {
+  const resumenPosiciones = posiciones.map((p) => ({
+    ticker: p.ticker,
+    nombre: p.nombre,
+    mercado: p.mercado,
+    cantidad: p.cantidad,
+    variacionHoyPorc: p.pctChange,
+    valorActual: p.valorActual,
+    ganancia: p.ganancia,
+  }));
+
+  const contextoInicial = `Sos una analista financiera senior, con conocimiento profundo de mercados globales y de la bolsa argentina (BYMA, CEDEARs, bonos, LECAPs). Respondés en español rioplatense, de forma directa y sin vueltas, con la rigurosidad de alguien con formación avanzada en finanzas. Podés buscar en internet cuando haga falta para traer información actualizada (noticias, cotizaciones de otros activos, contexto macro). Siempre aclarás cuando algo es tu opinión y no un consejo financiero formal.
+
+${estadoMercadoArgentino()}
+
+Esta es la cartera actual del usuario, por si es relevante para lo que te pregunte:
+${JSON.stringify(resumenPosiciones)}`;
+
+  const response = await ai.models.generateContent({
+    model: MODEL_PRO,
+    contents: [
+      { role: "user", parts: [{ text: contextoInicial }] },
+      {
+        role: "model",
+        parts: [{ text: "Entendido, ya tengo el contexto de tu cartera. ¿Qué querés saber?" }],
+      },
+      ...historial.map((m) => ({ role: m.role, parts: [{ text: m.texto }] })),
+      { role: "user", parts: [{ text: pregunta }] },
+    ],
+    config: {
+      tools: [{ googleSearch: {} }],
+      temperature: 0.5,
+    },
+  });
+
+  return response.text ?? "No pude responder eso, probá de nuevo.";
+}

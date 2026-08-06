@@ -7,6 +7,7 @@ import type { Posicion } from "@/lib/supabase";
 import type { PosicionConPrecio } from "@/lib/posiciones";
 import Nav from "./Nav";
 import InsightsMercado from "./InsightsMercado";
+import ChatMercado from "./ChatMercado";
 
 type ResultadoBusqueda = {
   symbol: string;
@@ -118,7 +119,7 @@ export default function AccionesDashboard() {
         </p>
       </header>
 
-      <div className="w-full max-w-md bg-ink-900 border border-led-amber/20 rounded-sm px-5 py-4 flex flex-col gap-2">
+      <div className="w-full max-w-md bg-ink-900 border border-led-amber/20 rounded-2xl px-5 py-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <span className="text-xs uppercase tracking-widest text-paper-300/50">
             Total de la cartera
@@ -148,7 +149,7 @@ export default function AccionesDashboard() {
         )}
       </div>
 
-      <div className="w-full max-w-md bg-ink-900 border border-paper-300/20 rounded-sm p-4 flex flex-col gap-3">
+      <div className="w-full max-w-md bg-ink-900 border border-paper-300/20 rounded-2xl p-4 flex flex-col gap-3">
         {cargando && (
           <p className="text-center text-xs text-paper-300/40 py-2">
             Cargando cotizaciones...
@@ -197,7 +198,7 @@ export default function AccionesDashboard() {
             <select
               value={mercado}
               onChange={(e) => setMercado(e.target.value as Mercado)}
-              className="flex-1 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+              className="flex-1 bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
             >
               {MERCADOS.map((m) => (
                 <option key={m} value={m}>
@@ -213,7 +214,7 @@ export default function AccionesDashboard() {
               value={cantidad}
               onChange={(e) => setCantidad(e.target.value)}
               required
-              className="w-28 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+              className="w-28 bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
             />
           </div>
 
@@ -224,7 +225,7 @@ export default function AccionesDashboard() {
             placeholder="Precio de compra (opcional, para ver ganancia)"
             value={ppc}
             onChange={(e) => setPpc(e.target.value)}
-            className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+            className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
           />
           {(mercado === "bono" || mercado === "lecap") && (
             <p className="text-[10px] text-paper-300/40">
@@ -238,7 +239,7 @@ export default function AccionesDashboard() {
           <button
             type="submit"
             disabled={guardando}
-            className="bg-paper-100 text-ink-950 rounded-sm py-2 text-sm font-medium disabled:opacity-50"
+            className="bg-paper-100 text-ink-950 rounded-full py-2 text-sm font-medium disabled:opacity-50"
           >
             {guardando ? "Guardando..." : "Agregar posición"}
           </button>
@@ -246,6 +247,8 @@ export default function AccionesDashboard() {
       </div>
 
       <InsightsMercado />
+
+      <ChatMercado />
     </main>
   );
 }
@@ -290,10 +293,10 @@ function BuscadorTicker({
         onFocus={() => setAbierto(true)}
         onBlur={() => setTimeout(() => setAbierto(false), 150)}
         required
-        className="w-full bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+        className="w-full bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
       />
       {abierto && resultados.length > 0 && (
-        <ul className="absolute z-10 left-0 mt-1 w-64 max-h-56 overflow-y-auto bg-ink-950 border border-paper-300/20 rounded-sm shadow-lg">
+        <ul className="absolute z-10 left-0 mt-1 w-64 max-h-56 overflow-y-auto overflow-x-hidden bg-ink-950 border border-paper-300/20 rounded-2xl shadow-lg">
           {resultados.map((r) => (
             <li key={`${r.mercado}-${r.symbol}`}>
               <button
@@ -376,14 +379,14 @@ function FilaPosicion({
           <button
             onClick={onEditar}
             aria-label="Editar posición"
-            className="text-paper-300/60 hover:text-led-amber text-sm px-2 py-1.5 -my-1.5"
+            className="rounded-full text-paper-300/60 hover:text-led-amber hover:bg-paper-300/10 text-sm px-2 py-1.5 -my-1.5"
           >
             ✎
           </button>
           <button
             onClick={onBorrar}
             aria-label="Borrar posición"
-            className="text-paper-300/60 hover:text-led-red text-sm px-2 py-1.5 -my-1.5"
+            className="rounded-full text-paper-300/60 hover:text-led-red hover:bg-paper-300/10 text-sm px-2 py-1.5 -my-1.5"
           >
             ✕
           </button>
@@ -433,12 +436,12 @@ function FilaEdicion({
         <input
           value={ticker}
           onChange={(e) => setTicker(e.target.value)}
-          className="w-24 bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+          className="w-24 bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
         />
         <select
           value={mercado}
           onChange={(e) => setMercado(e.target.value as Mercado)}
-          className="flex-1 bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+          className="flex-1 bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
         >
           {MERCADOS.map((m) => (
             <option key={m} value={m}>
@@ -452,7 +455,7 @@ function FilaEdicion({
           min="0"
           value={cantidad}
           onChange={(e) => setCantidad(e.target.value)}
-          className="w-24 bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+          className="w-24 bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
         />
       </div>
       <input
@@ -462,7 +465,7 @@ function FilaEdicion({
         placeholder="PPC (precio de compra)"
         value={ppc}
         onChange={(e) => setPpc(e.target.value)}
-        className="bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+        className="bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
       />
       <div className="flex gap-2 items-center">
         <button

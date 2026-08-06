@@ -32,7 +32,7 @@ export default function InsightsMercado() {
       <button
         onClick={pedirResumen}
         disabled={cargando}
-        className="w-full border border-led-green/30 text-led-green rounded-sm py-2.5 text-sm font-medium hover:bg-led-green/5 disabled:opacity-50"
+        className="w-full border border-led-green/30 text-led-green rounded-full py-2.5 text-sm font-medium hover:bg-led-green/5 disabled:opacity-50"
       >
         {cargando ? "Pensando..." : "¿Cómo estuvo el mercado hoy?"}
       </button>
@@ -40,7 +40,7 @@ export default function InsightsMercado() {
       {error && <p className="text-led-red text-xs mt-2">{error}</p>}
 
       {resumen && (
-        <div className="print-line mt-3 bg-ink-900 border border-paper-300/20 rounded-sm p-4 text-sm text-paper-200 whitespace-pre-line leading-relaxed">
+        <div className="print-line mt-3 bg-ink-900 border border-paper-300/20 rounded-2xl p-4 text-sm text-paper-200 whitespace-pre-line leading-relaxed">
           {resumen}
         </div>
       )}

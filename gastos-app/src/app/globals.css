@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  background-color: #0b1520;
-  color: #e3d9be;
+  background-color: #07090a;
+  color: #c7cdc8;
 }
 
 /* Borde de "tira dentada" arriba y abajo del ticket, como si estuviera arrancado de la máquina */
@@ -50,6 +50,6 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #f2b705;
+  outline: 2px solid #16a34a;
   outline-offset: 2px;
 }

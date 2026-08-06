@@ -75,7 +75,7 @@ export default function Dashboard() {
       </header>
 
       {/* Display tipo caja registradora con el total del mes */}
-      <div className="w-full max-w-md bg-ink-900 border border-led-amber/20 rounded-sm px-5 py-4 flex items-center justify-between">
+      <div className="w-full max-w-md bg-ink-900 border border-led-amber/20 rounded-2xl px-5 py-4 flex items-center justify-between">
         <span className="text-xs uppercase tracking-widest text-paper-300/50">
           Total del mes
         </span>

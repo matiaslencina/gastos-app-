@@ -112,7 +112,7 @@ export default function GastosFijosPanel() {
   }
 
   return (
-    <div className="w-full max-w-md bg-ink-900 border border-paper-300/20 rounded-sm p-4 flex flex-col gap-3">
+    <div className="w-full max-w-md bg-ink-900 border border-paper-300/20 rounded-2xl p-4 flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <span className="text-xs uppercase tracking-widest text-paper-300/50">
           Gastos fijos / mes
@@ -176,7 +176,7 @@ export default function GastosFijosPanel() {
                     <button
                       onClick={() => marcarCuotaPagada(g)}
                       aria-label="Marcar cuota pagada"
-                      className="text-paper-300/60 hover:text-led-green text-xs px-2 py-1.5 -my-1.5"
+                      className="rounded-full text-paper-300/60 hover:text-led-green hover:bg-paper-300/10 text-xs px-2 py-1.5 -my-1.5"
                     >
                       +1 cuota
                     </button>
@@ -184,14 +184,14 @@ export default function GastosFijosPanel() {
                   <button
                     onClick={() => setEditandoId(g.id)}
                     aria-label="Editar gasto fijo"
-                    className="text-paper-300/60 hover:text-led-amber text-sm px-2 py-1.5 -my-1.5"
+                    className="rounded-full text-paper-300/60 hover:text-led-amber hover:bg-paper-300/10 text-sm px-2 py-1.5 -my-1.5"
                   >
                     ✎
                   </button>
                   <button
                     onClick={() => borrar(g.id)}
                     aria-label="Borrar gasto fijo"
-                    className="text-paper-300/60 hover:text-led-red text-sm px-2 py-1.5 -my-1.5"
+                    className="rounded-full text-paper-300/60 hover:text-led-red hover:bg-paper-300/10 text-sm px-2 py-1.5 -my-1.5"
                   >
                     ✕
                   </button>
@@ -215,20 +215,20 @@ export default function GastosFijosPanel() {
             value={monto}
             onChange={(e) => setMonto(e.target.value)}
             required
-            className="w-28 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+            className="w-28 bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
           />
           <input
             placeholder="Descripción"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
-            className="flex-1 bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+            className="flex-1 bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
           />
         </div>
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
           required
-          className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+          className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
         >
           <option value="">Categoría</option>
           {CATEGORIAS.map((c) => (
@@ -257,7 +257,7 @@ export default function GastosFijosPanel() {
                 value={cuotasTotales}
                 onChange={(e) => setCuotasTotales(e.target.value)}
                 required
-                className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+                className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs text-paper-300/50">
@@ -267,7 +267,7 @@ export default function GastosFijosPanel() {
                 min="0"
                 value={cuotasPagadas}
                 onChange={(e) => setCuotasPagadas(e.target.value)}
-                className="bg-ink-950 border border-paper-300/20 rounded-sm px-3 py-2 text-sm text-paper-100"
+                className="bg-ink-950 border border-paper-300/20 rounded-2xl px-3 py-2 text-sm text-paper-100"
               />
             </label>
           </div>
@@ -278,7 +278,7 @@ export default function GastosFijosPanel() {
         <button
           type="submit"
           disabled={guardando}
-          className="bg-paper-100 text-ink-950 rounded-sm py-2 text-sm font-medium disabled:opacity-50"
+          className="bg-paper-100 text-ink-950 rounded-full py-2 text-sm font-medium disabled:opacity-50"
         >
           {guardando ? "Guardando..." : "Agregar gasto fijo"}
         </button>
@@ -314,19 +314,19 @@ function FilaEdicion({
           min="0"
           value={monto}
           onChange={(e) => setMonto(e.target.value)}
-          className="w-24 bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+          className="w-24 bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
         />
         <input
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          className="flex-1 bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+          className="flex-1 bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
         />
       </div>
       <div className="flex gap-2 items-center">
         <select
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
-          className="bg-ink-950 border border-paper-300/20 rounded-sm px-2 py-1 text-sm text-paper-100"
+          className="bg-ink-950 border border-paper-300/20 rounded-2xl px-2 py-1 text-sm text-paper-100"
         >
           {CATEGORIAS.map((c) => (
             <option key={c} value={c}>

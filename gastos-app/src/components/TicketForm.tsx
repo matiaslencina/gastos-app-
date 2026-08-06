@@ -51,12 +51,12 @@ export default function TicketForm({
           onChange={(e) => setTexto(e.target.value)}
           placeholder='"gasté 3500 en nafta ayer"'
           disabled={cargando}
-          className="flex-1 bg-ink-900 border border-paper-300/20 rounded-sm px-3 py-3 text-sm text-paper-100 placeholder:text-paper-300/30 focus:border-led-amber/60"
+          className="flex-1 bg-ink-900 border border-paper-300/20 rounded-full px-4 py-3 text-sm text-paper-100 placeholder:text-paper-300/30 focus:border-led-amber/60"
         />
         <button
           type="submit"
           disabled={cargando}
-          className="bg-led-amber text-ink-950 rounded-sm px-4 text-sm font-semibold disabled:opacity-50 whitespace-nowrap"
+          className="bg-led-amber text-ink-950 rounded-full px-4 text-sm font-semibold disabled:opacity-50 whitespace-nowrap"
         >
           {cargando ? "..." : "Cargar"}
         </button>

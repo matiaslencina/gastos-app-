@@ -19,7 +19,7 @@ export default function Nav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`flex-1 text-center rounded-sm py-2 text-sm font-medium border transition-colors ${
+            className={`flex-1 text-center rounded-full py-2 text-sm font-medium border transition-colors ${
               activo
                 ? "bg-led-amber text-ink-950 border-led-amber"
                 : "bg-ink-900 text-paper-300/60 border-paper-300/20"
