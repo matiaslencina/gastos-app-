@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const TABS = [
   { href: "/", label: "Gastos" },
@@ -10,6 +10,13 @@ const TABS = [
 
 export default function Nav() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch("/api/logout", { method: "POST" });
+    router.push("/login");
+    router.refresh();
+  }
 
   return (
     <nav className="w-full max-w-md flex gap-2">
@@ -29,6 +36,12 @@ export default function Nav() {
           </Link>
         );
       })}
+      <button
+        onClick={handleLogout}
+        className="rounded-full py-2 px-4 text-sm font-medium border bg-ink-900 text-paper-300/60 border-paper-300/20"
+      >
+        Salir
+      </button>
     </nav>
   );
 }
